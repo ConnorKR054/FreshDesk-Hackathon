@@ -8,6 +8,30 @@ let contacts = [];
 let tickets = [];
 login();
 
+function login() {
+  if (!(apiKey || domainName)) {
+    alert("warning", "Not logged in!");
+    setTimeout(() => {
+      window.location.href = "./login.html";
+    }, 2000);
+  } else {
+    alert( "Logged in!");
+    ticketlist();
+    view_contacts_list();
+  }
+}
+
+
+
+function resetForm()
+{
+  document.getElementById('name-create').value = '';
+  document.getElementById('email-create-contact').value = '';
+  document.getElementById('mobile-create').value = '';
+  document.getElementById('twitter-create').value = '';
+  document.getElementById('address-create').value = '';
+ 
+}
 async function ticketlist() {
   let connectstatus = true;
   let url = base_url + "tickets?include=description,requester&order_by=status";
@@ -47,47 +71,6 @@ async function ticketlist() {
       )
     );
   });
-}
-
-
-function resetForm()
-{
-  document.getElementById('name-create').value = '';
-  document.getElementById('email-create-contact').value = '';
-  document.getElementById('mobile-create').value = '';
-  document.getElementById('twitter-create').value = '';
-  document.getElementById('address-create').value = '';
- 
-}
-async function update_ticket(ticketId) {
-  let connectstatus = true;
-  let url = base_url + "tickets/" + ticketId;
-  let ticket = tickets.find((t) => t["id"] == ticketId);
-  let formData = new FormData();
-  let priority = document.getElementById(`Priority${ticketId}`).value;
-  if (priority) formData.append("priority", priority);
-  let status = document.getElementById(`Status${ticketId}`).value;
-  if (status) formData.append("status", status);
-
-  let data = await fetch(url, {
-    method: "PUT",
-    headers,
-    body: formData,
-  }).catch((error) => {
-    alert( "Error");
-    console.error("Error", error);
-    connectstatus = false;
-  });
-  if (!connectstatus) return;
-  if (data.status != 200) {
-    let error = await data.json();
-    alert( "ERROR,check" );
-    console.error(error);
-    return;
-  }
-  let parsedData = await data.json();
-  console.log(parsedData);
-  ticketlist();
 }
 function create_ticket_card(
   Id,
@@ -170,6 +153,36 @@ function create_ticket_card(
     </div>
   </div>`;
   return card;
+}   
+async function update_ticket(ticketId) {
+  let connectstatus = true;
+  let url = base_url + "tickets/" + ticketId;
+  let ticket = tickets.find((t) => t["id"] == ticketId);
+  let formData = new FormData();
+  let priority = document.getElementById(`Priority${ticketId}`).value;
+  if (priority) formData.append("priority", priority);
+  let status = document.getElementById(`Status${ticketId}`).value;
+  if (status) formData.append("status", status);
+
+  let data = await fetch(url, {
+    method: "PUT",
+    headers,
+    body: formData,
+  }).catch((error) => {
+    alert( "Error");
+    console.error("Error", error);
+    connectstatus = false;
+  });
+  if (!connectstatus) return;
+  if (data.status != 200) {
+    let error = await data.json();
+    alert( "ERROR,check" );
+    console.error(error);
+    return;
+  }
+  let parsedData = await data.json();
+  console.log(parsedData);
+  ticketlist();
 }
 
 async function delete_ticket(ticketId) {
@@ -208,6 +221,7 @@ async function view_contacts_list() {
     return;
   }
 
+  
   let parsedData = await data.json();
 
   console.log(parsedData);
@@ -224,18 +238,7 @@ async function view_contacts_list() {
   });
 }
 
-function create_contact_card(id, name, email, mobile) {
-  mobile = mobile ? mobile : "-";
-  let card = document.createElement("tr");
-  card.innerHTML = `<th scope="row">${id}</th>
-      <td id='name${id}'>${name}</td>
-      <td id='email${id}'>${email}</td>
-      <td id='mobile${id}'>${mobile}</td>
-      <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update-contact" onclick="fill_contact_details(${id})">
-  Update Contact
-</button></td>`;
-  return card;
-}
+
 
 function fill_contact_details(Id) {
   document.getElementById("update-btn").setAttribute("contactId", Id);
@@ -248,6 +251,18 @@ function fill_contact_details(Id) {
   document.getElementById("update-address").value = contact["address"];
 }
 
+function create_contact_card(id, name, email, mobile) {
+  mobile = mobile ? mobile : "-";
+  let card = document.createElement("tr");
+  card.innerHTML = `<th scope="row">${id}</th>
+      <td id='name${id}'>${name}</td>
+      <td id='email${id}'>${email}</td>
+      <td id='mobile${id}'>${mobile}</td>
+      <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#update-contact" onclick="fill_contact_details(${id})">
+  Update Contact
+</button></td>`;
+  return card;
+}
 async function update_contact(item) {
   let connectstatus = true;
 
@@ -389,29 +404,11 @@ async function create_contact() {
   view_contacts_list();
 }
 
-function login() {
-  if (!(apiKey || domainName)) {
-    alert("warning", "Not logged in!");
-    setTimeout(() => {
-      window.location.href = "./login.html";
-    }, 2000);
-  } else {
-    alert( "Logged in!");
-    ticketlist();
-    view_contacts_list();
-  }
-}
-function logOut() {
-  window.localStorage.removeItem("domain");
-  window.localStorage.removeItem("api_key");
-  alert("You are going to log out!");
-  setTimeout(() => (window.location.href = "./login.html"), 2000);
-}
+
 
 function customAlert(type, message) {
   
 }
-
 function scrollToCreateContact() {
   $("html, body").animate(
     {
@@ -420,3 +417,12 @@ function scrollToCreateContact() {
     500
   );
 }
+
+
+function logOut() {
+  window.localStorage.removeItem("domain");
+  window.localStorage.removeItem("api_key");
+  alert("You are going to log out!");
+  setTimeout(() => (window.location.href = "./login.html"), 2000);
+}
+
