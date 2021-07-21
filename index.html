@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FreshDesk Clone</title>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+
+<body class="" style="background-color: #CDF3A2;">
+  <div id="alert"></div>
+  <div class="modal fade" id="update-contact" tabindex="-1" role="dialog" aria-labelledby="contact-update"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Update Contact</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <div class="form-group">
+              <label for="contact-id">ID</label>
+              <input type="text" class="form-control" id="contact-id" readonly />
+            </div>
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" id="update-name" />
+            </div>
+            <div class="form-group">
+              <label for="email">Email ID</label>
+              <input type="email" class="form-control" id="update-email" />
+            </div>
+            <div class="form-group">
+              <label for="mobile">Mobile Number</label>
+              <input type="text" class="form-control" id="update-mobile" />
+            </div>
+            <div class="form-group">
+              <label for="update-fb">Twitter</label>
+              <input type="text" class="form-control" id="update-twitter" />
+            </div>
+            <div class="form-group">
+              <label for="update-address">Address</label>
+              <textarea type="text" class="form-control" id="update-address" row="3"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="update-btn" type="button" class="btn btn-success" contactId="" onclick="update_contact(this)"
+            data-dismiss="modal">
+            Update
+          </button>
+          <button type="button" class="btn btn-danger" onclick="delete_contact()" data-dismiss="modal">
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid py-3 mx-3">
+    <nav>
+      <div class="nav nav-pills d-flex-column flex-sm-row" id="nav-tab" role="tablist">
+        <a class="nav-item nav-link" id="nav-contacts-tab" data-toggle="tab" href="#nav-tickets" role="tab"
+          aria-controls="nav-contacts" aria-selected="false"><img
+            src="https://d3h0owdjgzys62.cloudfront.net/images/394/live_cover_art/thumb2x/FD_Marketplace_dew.png"
+            style="height: 40px;padding: 0px; margin: 0;" alt=""></a>
+        <a class="nav-item nav-link active" id="nav-tickets-tab" data-toggle="tab" href="#nav-tickets" role="tab"
+          aria-controls="nav-tickets" aria-selected="true">Tickets</a>
+        <a class="nav-item nav-link" id="nav-contacts-tab" data-toggle="tab" href="#nav-contacts" role="tab"
+          aria-controls="nav-contacts" aria-selected="false">Contacts</a>
+        <a class="nav-item nav-link" id="nav-create-tab" data-toggle="tab" href="#nav-create" role="tab"
+          aria-controls="nav-create" aria-selected="false">Create</a>
+        <div class="ml-auto mr-5">
+          <button class="btn btn-danger" type="button" onclick="logOut()">
+            Logout
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div class="tab-content" id="nav-tabContent">
+      <div class="tab-pane fade show active" id="nav-tickets" role="tabpanel" aria-labelledby="nav-tickets-tab">
+        <div class="row" id="ticket-list"></div>
+      </div>
+      <div class="tab-pane fade" id="nav-contacts" role="tabpanel" aria-labelledby="nav-contacts-tab">
+        <div class="row pl-3" style="width: 100%;">
+          <table class="table table-dark">
+            <thead>
+              <tr>
+                <th scope="col">UserID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email ID</th>
+                <th scope="col">Mobile</th>
+                <th scope="col">Update</th>
+              </tr>
+            </thead>
+            <tbody id="contacts-list"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="tab-pane fade" id="nav-create" role="tabpanel" aria-labelledby="nav-create-tab">
+        <div class="mx-5">
+          <h3>Create a new Contact</h3>
+          <div class="form-group ">
+            <label for="name-create">Name</label>
+            <input type="text" class="form-control" id="name-create" required />
+          </div>
+          <div class="form-group">
+            <label for="email-create-contact">Email Id</label>
+            <input type="email" class="form-control" id="email-create-contact" aria-describedby="emailHelp" required />
+          </div>
+          <div class="form-group">
+            <label for="mobile-create">Mobile Number</label>
+            <input type="text" class="form-control" id="mobile-create" />
+          </div>
+          <div class="form-group">
+            <label for="twitter-create">Twitter</label>
+            <input type="text" class="form-control" id="twitter-create" />
+          </div>
+          <div class="form-group">
+            <label for="address-create">Address</label>
+            <textarea type="text" class="form-control" id="address-create" row="3"></textarea>
+          </div>
+          <button type="button" class="btn btn-primary" onclick="create_contact()">
+            Submit
+          </button>
+          <button type="button" class="btn btn-primary" onclick="resetForm()">Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script src="./script.js"></script>
+
+</html>

@@ -1,0 +1,10 @@
+.signinText
+{
+margin-bottom: 80px;
+}
+.card-header {
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: #d2efe2;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}
