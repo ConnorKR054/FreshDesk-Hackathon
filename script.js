@@ -412,19 +412,6 @@ function customAlert(type, message) {
   
 }
 
-function suggestContacts() {
-  $("#suggestion-list").empty();
-  let val = $("#email-create-ticket").val();
-  if (!val) return;
-  let regex = new RegExp(`^${val}`, "i");
-  let suggesionList = contacts
-    .filter((contact) => contact["email"].match(regex))
-    .map((contact) => contact["email"]);
-  suggesionList.forEach((mail) => {
-    $("#suggestion-list").append(` <option value="${mail}"></option>`);
-  });
-}
-
 function scrollToCreateContact() {
   $("html, body").animate(
     {
